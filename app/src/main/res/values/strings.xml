@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Notes</string>
+    <string name="title_notes">Notes</string>
+    <string name="title_add_note">Add Note</string>
+    <string name="title_edit_note">Edit Note</string>
+    <string name="hint_note_title">Note Title</string>
+    <string name="hint_note_text">Note Text</string>
+    <string name="note_added">Note added successfully!</string>
+    <string name="error_empty_fields">All fields are required</string>
 </resources>
