@@ -1,5 +1,6 @@
 package com.github.aayman93.notes.repository
 
+import androidx.lifecycle.LiveData
 import com.github.aayman93.notes.data.database.NotesDao
 import com.github.aayman93.notes.data.models.Note
 import kotlinx.coroutines.Dispatchers
@@ -11,6 +12,18 @@ import javax.inject.Singleton
 class NotesRepository @Inject constructor(
     private val notesDao: NotesDao
 ) {
+
+    fun getNotesSortedByTitle(): LiveData<List<Note>> {
+        return notesDao.getNotesSortedByTitle()
+    }
+
+    fun getNotesSortedByDateCreated(): LiveData<List<Note>> {
+        return notesDao.getNotesSortedByDateCreated()
+    }
+
+    fun getNotesSortedByDateModified(): LiveData<List<Note>> {
+        return notesDao.getNotesSortedByDateModified()
+    }
 
     suspend fun addNote(note: Note) {
         withContext(Dispatchers.IO) {

@@ -7,4 +7,8 @@
     <string name="hint_note_text">Note Text</string>
     <string name="note_added">Note added successfully!</string>
     <string name="error_empty_fields">All fields are required</string>
+    <string name="sort">Sort</string>
+    <string name="label_title">Title</string>
+    <string name="label_date_created">Date created</string>
+    <string name="label_date_modified">Date modified</string>
 </resources>

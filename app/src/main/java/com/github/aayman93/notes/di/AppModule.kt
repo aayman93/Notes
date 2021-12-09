@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.github.aayman93.notes.data.database.NotesDao
 import com.github.aayman93.notes.data.database.NotesDatabase
+import com.github.aayman93.notes.util.Constants.NOTES_DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,8 +15,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-    private const val NOTES_DATABASE_NAME = "notes_db"
 
     @Singleton
     @Provides
