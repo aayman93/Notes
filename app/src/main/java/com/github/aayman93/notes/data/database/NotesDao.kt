@@ -1,9 +1,7 @@
 package com.github.aayman93.notes.data.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.github.aayman93.notes.data.models.Note
 
 @Dao
@@ -20,4 +18,13 @@ interface NotesDao {
 
     @Insert
     suspend fun addNote(note: Note)
+
+    @Update
+    suspend fun updateNote(note: Note)
+
+    @Delete
+    suspend fun deleteNote(note: Note)
+
+    @Query("DELETE FROM notes")
+    suspend fun deleteAllNotes()
 }

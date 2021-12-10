@@ -19,6 +19,18 @@ class AddEditViewModel @Inject constructor(
         }
     }
 
+    fun updateNote(note: Note) {
+        viewModelScope.launch {
+            repository.updateNote(note)
+        }
+    }
+
+    fun deleteNote(note: Note) {
+        viewModelScope.launch {
+            repository.deleteNote(note)
+        }
+    }
+
     fun validateInputs(noteTitle: String, noteText: String): Boolean {
         return !(noteTitle.isBlank() || noteText.isBlank())
     }

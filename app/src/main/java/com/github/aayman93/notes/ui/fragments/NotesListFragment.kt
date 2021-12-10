@@ -1,10 +1,9 @@
 package com.github.aayman93.notes.ui.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -50,6 +49,7 @@ class NotesListFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         init()
         setListeners()
     }
@@ -57,6 +57,13 @@ class NotesListFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
     private fun init() {
         prefsManager = PrefsManager(requireContext())
         binding.notesRecycler.adapter = notesAdapter
+
+        notesAdapter.setOnNoteClickListener { note ->
+            findNavController().navigate(
+                NotesListFragmentDirections.actionNotesListFragmentToEditNoteFragment(note)
+            )
+        }
+
         when (prefsManager.getInt(KEY_SORTED_BY, SORTED_BY_TITLE_INDEX)) {
             SORTED_BY_TITLE_INDEX -> { getNotesSortedByTitle() }
             SORTED_BY_DATE_CREATED_INDEX -> { getNotesSortedByDateCreated() }
@@ -85,24 +92,6 @@ class NotesListFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
         }
     }
 
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        return when(item?.itemId) {
-            R.id.sort_by_title -> {
-                getNotesSortedByTitle()
-                true
-            }
-            R.id.sort_by_date_created -> {
-                getNotesSortedByDateCreated()
-                true
-            }
-            R.id.sort_by_date_modified -> {
-                getNotesSortedByDateModified()
-                true
-            }
-            else -> false
-        }
-    }
-
     private fun getNotesSortedByTitle() {
         prefsManager.putInt(KEY_SORTED_BY, SORTED_BY_TITLE_INDEX)
         binding.tvSortBy.text = getString(R.string.label_title)
@@ -128,6 +117,54 @@ class NotesListFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
 
         viewModel.sortedByTitle.removeObserver(notesObserver)
         viewModel.sortedByDateCreated.removeObserver(notesObserver)
+    }
+
+    private fun showDeleteAllDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.delete_all_dialog_title)
+            .setMessage(R.string.delete_all_dialog_message)
+            .setPositiveButton(getString(R.string.delete_dialog_positive_button_text)) { _, _ ->
+                deleteAllNotes()
+            }
+            .setNegativeButton(getString(R.string.delete_dialog_negative_button_text)) { _, _ -> }
+            .create().show()
+    }
+
+    private fun deleteAllNotes() {
+        viewModel.deleteAllNotes()
+        Toast.makeText(requireContext(), R.string.all_notes_deleted, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        return when(item?.itemId) {
+            R.id.sort_by_title -> {
+                getNotesSortedByTitle()
+                true
+            }
+            R.id.sort_by_date_created -> {
+                getNotesSortedByDateCreated()
+                true
+            }
+            R.id.sort_by_date_modified -> {
+                getNotesSortedByDateModified()
+                true
+            }
+            else -> false
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_notes_list, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.action_delete_all -> {
+                showDeleteAllDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onDestroyView() {

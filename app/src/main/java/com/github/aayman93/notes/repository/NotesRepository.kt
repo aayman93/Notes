@@ -30,4 +30,22 @@ class NotesRepository @Inject constructor(
             notesDao.addNote(note)
         }
     }
+
+    suspend fun updateNote(note: Note) {
+        withContext(Dispatchers.IO) {
+            notesDao.updateNote(note)
+        }
+    }
+
+    suspend fun deleteNote(note: Note) {
+        withContext(Dispatchers.IO) {
+            notesDao.deleteNote(note)
+        }
+    }
+
+    suspend fun deleteAllNotes() {
+        withContext(Dispatchers.IO) {
+            notesDao.deleteAllNotes()
+        }
+    }
 }

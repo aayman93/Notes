@@ -26,5 +26,9 @@
         android:id="@+id/editNoteFragment"
         android:name="com.github.aayman93.notes.ui.fragments.EditNoteFragment"
         android:label="@string/title_edit_note"
-        tools:layout="@layout/fragment_edit_note" />
+        tools:layout="@layout/fragment_edit_note" >
+        <argument
+            android:name="note"
+            app:argType="com.github.aayman93.notes.data.models.Note" />
+    </fragment>
 </navigation>

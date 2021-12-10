@@ -11,6 +11,12 @@ import javax.inject.Inject
 
 class NotesAdapter @Inject constructor() : ListAdapter<Note, NotesAdapter.NotesViewHolder>(Differ) {
 
+    private var onNoteClickListener: ((Note) -> Unit)? = null
+
+    fun setOnNoteClickListener(listener: (Note) -> Unit) {
+        onNoteClickListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesViewHolder {
         val binding = ItemNoteBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -33,6 +39,10 @@ class NotesAdapter @Inject constructor() : ListAdapter<Note, NotesAdapter.NotesV
             with(binding) {
                 tvNoteTitle.text = note.title
                 tvNoteText.text = note.text
+
+                root.setOnClickListener {
+                    onNoteClickListener?.invoke(note)
+                }
             }
         }
     }
